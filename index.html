@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Terminal Command Center</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <button id="showHUDButton" class="show-hud-btn hidden">👁️ SHOW HUD</button>
+
+    <div class="control-panel" id="controlPanel">
+        <h3>
+            <span>CORE: ACTIVE<span class="blinking-cursor">_</span></span>
+            <span class="hud-actions">
+                <button id="muteButton" title="Toggle Sound">🔊</button>
+                <button id="hideButton" title="Hide HUD">👁️</button>
+            </span>
+        </h3>
+        
+        <div class="section">
+            <label>Override Matrix Scheme</label>
+            <div class="color-palette">
+                <button class="btn btn-green" id="btn-green"></button>
+                <button class="btn btn-pink" id="btn-pink"></button>
+                <button class="btn btn-gold" id="btn-gold"></button>
+                <button class="btn btn-blue" id="btn-blue"></button>
+            </div>
+        </div>
+
+        <div class="section">
+            <label>Temporal Speed Engine</label>
+            <input type="range" id="speedSlider" min="5" max="100" value="30">
+        </div>
+
+        <!-- NEW: Engine Modes -->
+        <div class="section">
+            <label>Engine Customization</label>
+            <button id="trailToggleBtn" class="utility-btn">TRAIL MODE: CLASSIC</button>
+        </div>
+
+        <div class="status-text">
+            ⚡ Drag cursor to ripple fabric.<br>
+            🔊 Click map to synthesize audio.
+        </div>
+    </div>
+
+    <canvas id="matrixCanvas"></canvas>
+
+    <script src="script.js"></script>
+</body>
+</html>
