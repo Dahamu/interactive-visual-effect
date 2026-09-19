@@ -4,9 +4,7 @@ A high-performance HTML5 Canvas interface built using vanilla web technologies t
 
 ## Live Implementation
 The deployed production environment can be accessed at the following destination:
-https://github.io
-
-(Note: Replace "your-github-username" with your active GitHub account profile name).
+https://dahamu.github.io/interactive-visual-effect/
 
 ## Technical Specifications
 * High-Intensity Spotlight Hover: Implements a localized spotlight glow architecture targeting canvas character vectors dynamically without altering structural grid coordinates.
