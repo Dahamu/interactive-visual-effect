@@ -3,46 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matrix Terminal Command Center</title>
+    <title>Matrix Analytics Dashboard</title>
+    <!-- Importing a professional, clean developer monospace font -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <button id="showHUDButton" class="show-hud-btn hidden">👁️ SHOW HUD</button>
+    <button id="showHUDButton" class="show-hud-btn hidden">SHOW CONTROL INTERFACE</button>
 
     <div class="control-panel" id="controlPanel">
         <h3>
-            <span>CORE: ACTIVE<span class="blinking-cursor">_</span></span>
-            <span class="hud-actions">
-                <button id="muteButton" title="Toggle Sound">🔊</button>
-                <button id="hideButton" title="Hide HUD">👁️</button>
-            </span>
+            <span>SYSTEM MONITOR [ACTIVE]</span>
+            <!-- Wrap them inside a distinct action layout class -->
+            <div class="hud-actions">
+                <button id="muteButton" title="Toggle Audio Feedback">AUDIO OFF</button>
+                <button id="hideButton" title="Minimize Panel">HIDE</button>
+            </div>
         </h3>
+
         
         <div class="section">
-            <label>Override Matrix Scheme</label>
+            <label>Interface Color Scheme</label>
             <div class="color-palette">
-                <button class="btn btn-green" id="btn-green"></button>
-                <button class="btn btn-pink" id="btn-pink"></button>
-                <button class="btn btn-gold" id="btn-gold"></button>
-                <button class="btn btn-blue" id="btn-blue"></button>
+                <button class="btn btn-green" id="btn-green" title="Emerald"></button>
+                <button class="btn btn-pink" id="btn-pink" title="Magenta"></button>
+                <button class="btn btn-gold" id="btn-gold" title="Amber"></button>
+                <button class="btn btn-blue" id="btn-blue" title="Cyan"></button>
             </div>
         </div>
 
         <div class="section">
-            <label>Temporal Speed Engine</label>
-            <input type="range" id="speedSlider" min="5" max="100" value="30">
+            <label>Data Streams Throttle</label>
+            <div class="input-wrapper">
+                <input type="range" id="speedSlider" min="5" max="100" value="30">
+            </div>
         </div>
 
-        <!-- NEW: Engine Modes -->
         <div class="section">
-            <label>Engine Customization</label>
-            <button id="trailToggleBtn" class="utility-btn">TRAIL MODE: CLASSIC</button>
+            <label>Render Architecture Mode</label>
+            <button id="trailToggleBtn" class="utility-btn">TRAIL PROCESSING: INSTANT FADE</button>
+        </div>
+
+        <div class="section">
+            <label>Hardware Telemetry</label>
+            <div class="telemetry-grid">
+                <div>NETWORK LINKS: <span id="netStatus">PENDING...</span></div>
+                <div>BATTERY CELLS: <span id="batteryStatus">PENDING...</span></div>
+            </div>
         </div>
 
         <div class="status-text">
-            ⚡ Drag cursor to ripple fabric.<br>
-            🔊 Click map to synthesize audio.
+            Cursor tracking activates localized highlight aura configurations. Audio frequency scales dynamically with data depth variables.
         </div>
     </div>
 
