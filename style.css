@@ -1,8 +1,21 @@
+:root {
+    --theme: #10b981;                 /* set from script.js when a colour swatch is chosen */
+    --theme-faint: rgba(16, 185, 129, 0.2);
+}
+@supports (color: color-mix(in srgb, red 50%, blue)) {
+    :root { --theme-faint: color-mix(in srgb, var(--theme) 20%, transparent); }
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+    overscroll-behavior: none;        /* no pull-to-refresh / rubber-banding while dragging a finger */
 }
 
 body {
@@ -18,6 +31,13 @@ canvas {
     position: absolute;
     top: 0;
     left: 0;
+    touch-action: none;               /* the browser must not claim finger drags for scrolling/zooming */
+}
+
+/* Keyboard focus must always be visible */
+:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
 }
 
 /* Premium Minimalist Control Panel Dashboard */
@@ -26,70 +46,78 @@ canvas {
     top: 24px;
     left: 24px;
     background: rgba(17, 24, 39, 0.9);
+    -webkit-backdrop-filter: blur(16px);
     backdrop-filter: blur(16px);
-    border: 1px solid #10b981;
+    border: 1px solid var(--theme);
     padding: 24px;
     border-radius: 12px;
     z-index: 10;
-    color: #10b981;
+    color: var(--theme);
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
-    width: 330px;
-    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: min(330px, calc(100vw - 32px));
+    max-height: calc(100vh - 32px);
+    max-height: calc(100dvh - 32px);
+    overflow-y: auto;                 /* short landscape phones: scroll inside the panel */
+    touch-action: manipulation;       /* removes the double-tap-zoom delay on controls */
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s;
 }
 
-h3 {
-    font-size: 13px;
-    font-weight: 700;
-    margin-bottom: 20px;
-    letter-spacing: 0.5px;
-    border-bottom: 1px dashed #10b981;
-    padding-bottom: 12px;
+.panel-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed var(--theme);
 }
 
-/* Forces the buttons to stay in a neat horizontal line */
+.panel-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
 .hud-actions {
-    display: flex !important;
-    flex-direction: row !important;
-    gap: 8px !important;            /* This creates a permanent space between them */
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
     align-items: center;
 }
 
-/* Beautiful custom dashboard styling for each action trigger */
 .hud-actions button {
     background: rgba(0, 0, 0, 0.2);
     border: 1px solid currentColor;
     color: inherit;
     cursor: pointer;
-    font-size: 9px;
+    font-size: 11px;
     font-family: inherit;
     font-weight: 700;
     letter-spacing: 0.5px;
-    padding: 6px 10px !important;   /* Clean box size padding */
+    padding: 6px 10px;
+    min-height: 32px;
     border-radius: 4px;
-    transition: all 0.2s ease-in-out;
-    white-space: nowrap;            /* Prevents text from breaking into two lines */
+    transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+    white-space: nowrap;
 }
 
-.hud-actions button:hover {
-    background: rgba(16, 185, 129, 0.15);
-    transform: translateY(-1px);
+.hud-actions button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .section {
     margin-bottom: 20px;
 }
 
-label {
+.field-label {
     font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.8px;
     display: block;
     margin-bottom: 10px;
-    color: #34d399;
+    color: var(--theme);
 }
 
 .color-palette {
@@ -111,14 +139,15 @@ label {
 .btn-gold  { background: #f59e0b !important; border-color: #f59e0b; }
 .btn-blue  { background: #06b6d4 !important; border-color: #06b6d4; }
 
-.btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px currentColor;
+/* The selected swatch gets a ring, so the state is not only "which colour is raining" */
+.btn[aria-pressed="true"] {
+    box-shadow: 0 0 0 2px #111827, 0 0 0 4px #ffffff;
 }
 
 .input-wrapper {
     background: rgba(0, 0, 0, 0.3);
     border: 1px solid rgba(16, 185, 129, 0.2);
+    border: 1px solid var(--theme-faint);
     padding: 12px;
     border-radius: 8px;
     display: flex;
@@ -130,33 +159,28 @@ input[type=range] {
     background: #1f2937;
     height: 4px;
     border-radius: 2px;
-    outline: none;
-    accent-color: #10b981;
+    accent-color: var(--theme);
     cursor: pointer;
 }
 
 .utility-btn {
     width: 100%;
     background: rgba(0, 0, 0, 0.3);
-    border: 1px dashed #10b981;
-    color: #10b981;
+    border: 1px dashed var(--theme);
+    color: var(--theme);
     padding: 10px;
     border-radius: 8px;
     font-family: inherit;
     font-size: 11px;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.utility-btn:hover {
-    background: rgba(16, 185, 129, 0.1);
-    border-style: solid;
+    transition: background-color 0.2s ease, border-style 0.2s ease;
 }
 
 .telemetry-grid {
     background: rgba(0, 0, 0, 0.4);
     border: 1px solid rgba(16, 185, 129, 0.2);
+    border: 1px solid var(--theme-faint);
     padding: 14px;
     border-radius: 8px;
     font-size: 11px;
@@ -168,12 +192,16 @@ input[type=range] {
     font-weight: 500;
 }
 
+.telemetry-grid span.is-offline {
+    color: #ec4899;
+}
+
 .status-text {
     font-size: 11px;
-    color: #6b7280;
+    color: #9ca3af;                   /* was #6b7280: ~3.7:1 contrast; this is ~7:1 */
     margin-top: 14px;
     line-height: 1.6;
-    border-top: 1px solid rgba(16, 185, 129, 0.1);
+    border-top: 1px solid var(--theme-faint);
     padding-top: 12px;
 }
 
@@ -183,8 +211,8 @@ input[type=range] {
     left: 24px;
     z-index: 11;
     background: #111827;
-    border: 1px solid #10b981;
-    color: #10b981;
+    border: 1px solid var(--theme);
+    color: var(--theme);
     padding: 12px 20px;
     border-radius: 8px;
     cursor: pointer;
@@ -193,18 +221,59 @@ input[type=range] {
     font-weight: 700;
     letter-spacing: 0.5px;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-    transition: all 0.2s ease;
+    touch-action: manipulation;
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s, background-color 0.2s ease, color 0.2s ease;
 }
 
-.show-hud-btn:hover {
-    background: #10b981;
-    color: #111827;
-    box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+/* Hover effects only where a real hover exists (avoids "sticky hover" after a tap on phones) */
+@media (hover: hover) {
+    .hud-actions button:hover { background: var(--theme-faint); transform: translateY(-1px); }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px currentColor; }
+    .btn[aria-pressed="true"]:hover { box-shadow: 0 0 0 2px #111827, 0 0 0 4px #ffffff; }
+    .utility-btn:hover { background: var(--theme-faint); border-style: solid; }
+    .show-hud-btn:hover { background: var(--theme); color: #111827; box-shadow: 0 0 15px var(--theme-faint); }
 }
 
+/* Larger touch targets on touch screens (~44px is the common guideline) */
+@media (pointer: coarse) {
+    .hud-actions button { min-height: 44px; padding: 8px 12px; }
+    .btn { height: 44px; }
+    .utility-btn { min-height: 44px; }
+    .show-hud-btn { min-height: 44px; }
+    .input-wrapper { padding: 18px 12px; }
+}
+
+@media (max-width: 480px) {
+    .control-panel { top: 12px; left: 12px; padding: 16px; width: min(330px, calc(100vw - 24px)); }
+    .show-hud-btn { top: 12px; left: 12px; }
+    .panel-title { font-size: 12px; }
+}
+
+/* Hidden = not focusable, not read by screen readers, not clickable.
+   visibility is delayed so the fade-out can finish first. */
 .hidden {
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
     transform: translateY(-8px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
+}
+
+.fallback {
     position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    color: #ec4899;
+    text-align: center;
+    font-size: 14px;
+}
+.fallback[hidden] { display: none; }
+
+/* Reduced motion: no sliding/fading/hover-lift in the interface either */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; }
+    .hud-actions button:hover, .btn:hover { transform: none; }
+    .hidden { transform: none; }
 }
